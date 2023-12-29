@@ -1,0 +1,19 @@
+{
+  "name": "bcf-web-editor",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nelsonhp3/bcf-js": "^0.4.0",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-no-ssr": "^1.1.0"
+  }
+}

@@ -1,0 +1,22 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.projectMainContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.leftColumn {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.middleColumn {
+    flex: 1;
+    background-color: greenyellow;
+}
