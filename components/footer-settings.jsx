@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 
 import styles from '../styles/footer-settings.module.css'
 import { BcfContext } from '../context/bcf-context'
+import { BcfParser } from '@nelsonhp3/bcf-js'
 
 function FooterSettings() {
     const { project,dispatch } = useContext(BcfContext)
@@ -9,18 +10,20 @@ function FooterSettings() {
     const uploadBCF = async () => {
         const input = document.createElement('input')
         input.type = 'file'
+        input.accept = '.bcf, .bcfzip'
 
         input.addEventListener('change',async (event) => {
             const file = event.target.files[0]
 
             try {
                 const buffer = await file.arrayBuffer()
-                var projectLoad = new BcfProject('')
+                console.log('buffer :>> ', buffer);
+                var projectLoad = new BcfParser()
                 await projectLoad.read(buffer)
-                projectLoad.newMarkup('clash','open','Pipe clashing a column','Nelson Henrique')
+                console.log('projectLoad :>> ', projectLoad);
                 dispatch({
                     type: "LOAD_PROJECT_SUCCESS",
-                    payload: { project: projectLoad },
+                    payload: { project: projectLoad.project },
                 })
 
                 // await loadProject(file,dispatch)
@@ -48,10 +51,15 @@ function FooterSettings() {
         }
     }
 
+    const openSettings = async () => {
+
+    }
+
   return (
     <div className={styles.mainContainer}>
-        <button onClick={uploadBCF}>Upload BCF</button>
-        <button onClick={downloadBCF}>Download BCF</button>
+        <button className={styles.mainActionButton} onClick={uploadBCF}>Upload BCF</button>
+        <button className={styles.mainActionButton} onClick={downloadBCF}>Download BCF</button>
+        <button className={styles.mainActionButton} onClick={openSettings}>🔧</button>
     </div>
   )
 }

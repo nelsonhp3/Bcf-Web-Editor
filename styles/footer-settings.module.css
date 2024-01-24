@@ -1,5 +1,21 @@
 .mainContainer {
-    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr auto;
     height: 50px;
-    background-color: aquamarine;
+}
+
+/*TODO: Move this */
+.mainActionButton {
+    flex: 1;
+    margin: 0;
+    background-color: #252525;
+    color: #ccc;
+    border: 0;
+    cursor: pointer;
+    transition: 0.7s;
+}
+
+.mainActionButton:hover {
+    background-color: #333;
 }

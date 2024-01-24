@@ -1,0 +1,27 @@
+.markupHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    font-size: 0.75rem;
+    background-color: #444;
+}
+
+.markupHeader h1 {
+    font-size: 1rem;
+}
+
+.markupHeader>span, .markupHeader>input {
+    font-size: 0.875rem;
+}
+
+.assignedToContainer, .labelsContainer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.datesContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}

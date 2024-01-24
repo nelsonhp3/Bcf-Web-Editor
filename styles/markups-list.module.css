@@ -1,4 +1,68 @@
 .mainContainer {
-    width: 300px;
-    flex: 1;
+    --markup-item: #222;
+    --markup-item-hover: #333;
+    --markup-item-selected: #444;
+    --markup-item-border: #333;
+}
+
+.markupItem, .markupItemSelected {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    background-color: var(--markup-item);
+    border: 0.1rem solid var(--markup-item-border);
+    cursor: pointer;
+    transition: 0.7s;
+}
+
+.markupItem>h2 {
+    margin: 0;
+}
+
+.markupItem:hover {
+    background-color: var(--markup-item-hover);
+}
+
+.markupItemSelected {
+    background-color: var(--markup-item-selected);
+}
+
+.labelsList {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.chipsListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chipsListContainer>span {
+    font-size: 0.7rem;
+}
+
+.chipItem {
+    border: 0.1rem solid var(--global-blue);
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    align-self: flex-start;
+    font-size: 0.6rem;
+}
+
+.assignedToAndDueDateContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.dueDate {
+    grid-column: 2;
+    text-align: end;
 }
