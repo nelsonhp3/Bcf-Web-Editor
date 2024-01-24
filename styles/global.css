@@ -13,6 +13,10 @@ html, body, #__next {
     --global-blue: #43BDFF;
 }
 
+h1, h2, h3 {
+    margin: 0;
+}
+
 .mainActionButton {
     flex: 1;
     margin: 0;

@@ -1,5 +1,33 @@
-import { createContext,useReducer } from "react"
+import { createContext,useEffect,useReducer } from "react"
 import { BcfProject } from "@nelsonhp3/bcf-js"
+
+const randomLongMessage = 'https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwjx88yTzJSDAxVtRUgAHXRjAOwYABAEGgJjZQ&ase=2&gclid=Cj0KCQiAsvWrBhC0ARIsAO4E6f_Ya1XcCOhJdliI_DsoQIpsAAdwCaRX2RpvLNyFhkfJqAJrUG9tdLIaAsdmEALw_wcB&ohost=www.google.com&cid=CAESVeD2EjcR3wTUJI90O8YKgUyU4epnFrHW776Lgx-jK8GZdYlRTzTBoLRKBYUgtzQfd5Scyd_CWWvjNOzRXhXMS3BC3VU_EV_jnxA5QWsnHMedaWafL8E&sig=AOD64_33-44okF3IjEfPKiAAJmG61QvTUQ&ctype=5&q=&nis=4&ved=2ahUKEwj4lMaTzJSDAxVirpUCHYkGBMIQ9aACKAB6BAgDEBU&adurl='
+
+const ImageComponent = () => {
+    const imageUrl = '/cool-cat.jpg' // Change the path to your image in the public folder
+
+    const fetchData = () => {
+        return new Promise(async (resolve,reject) => {
+            try {
+                const response = await fetch(imageUrl)
+                const arrayBuffer = await response.arrayBuffer()
+                resolve(arrayBuffer)
+            } catch (error) {
+                console.error('Error fetching image:',error)
+                reject(error)
+            }
+        })
+    }
+
+    // fetchData().then((arrayBuffer) => {
+    //     console.log('01 arrayBuffer :>> ',arrayBuffer)
+    //     return arrayBuffer
+    // }).catch((error) => {
+    //     // Handle errors
+    // })
+
+    return fetchData()
+}
 
 function createDummyProject() {
 
@@ -9,7 +37,13 @@ function createDummyProject() {
     markup1.topic.labels = ["ARQ","HID"]
     markup1.topic.assigned_to = "Nelson Henrique Paranhos Coelho"
     markup1.topic.due_date = new Date(Date.now()).toLocaleString('en-US',{ day: 'numeric',month: 'long',year: 'numeric' })
-    const comment1 = dummyProject.newComment(markup1,'Ok. I will fix it.','Nelson Henrique')
+    const comment1 = dummyProject.newComment(markup1,'Beleza. Vou ajeitar aqui','Rafael Chaves')
+    const comment1_2 = dummyProject.newComment(markup1,randomLongMessage,'Israel Augusto',undefined) //TODO: Fix this viewpoint error in bcf-js
+    const comment1_3 = dummyProject.newComment(markup1,'Olha esse gato!!!','Nelson Henrique',undefined) //TODO: Fix this viewpoint error in bcf-js
+    // const newSnp = dummyProject.newSnapshot(markup1,'')
+    // comment1_2.viewpoint = newSnp.guid || 'asdasdjsakdjaslkdj'
+    comment1_3.viewpoint = 'asdasdjsakdjaslkdj'
+    // const { visualizationInfo } = dummyProject.editViewpointInfo(newSnp.guid)
 
     const markup2 = dummyProject.newMarkup('clash','active','Column in the middle of the room','Nelson Henrique')
     markup2.topic.labels = ["ARQ","EST","ELE","HID"]
@@ -33,11 +67,9 @@ var INITIAL_STATE = {
 }
 
 export async function loadProject(file,dispatcher) {
-    console.log('passing loadProject')
     const buffer = await file.arrayBuffer()
     var projectLoad = new BcfProject('')
     await projectLoad.read(buffer)
-    console.log('projectLoad :>> ',projectLoad)
     dispatcher({
         type: "LOAD_PROJECT",
         payload: { project: projectLoad },
@@ -48,28 +80,33 @@ export const BcfContext = createContext(INITIAL_STATE)
 
 export const BcfReducer = (state,action) => {
     const project = state.project
+    const payload = action.payload
 
     switch (action.type) {
         case "LOAD_PROJECT":
-            if (!action.payload)
+            if (!payload)
                 throw new Error('No Payload')
-            return { ...state,pendingLoad: action.payload.projectBuffer }
+            return { ...state,pendingLoad: payload.projectBuffer }
 
         case "LOAD_PROJECT_SUCCESS":
-            console.log('LOAD_PROJECT_SUCCESS payload: ',action.payload)
-            return { ...state,project: action.payload.project,pendingLoad: null }
+            console.log('LOAD_PROJECT_SUCCESS payload: ',payload)
+            return { ...state,project: payload.project,pendingLoad: null }
 
         case "LOAD_PROJECT_FAILURE":
             console.error('Error loading project:',action.error)
             return { ...state,pendingLoad: null }
 
+        case "NEW_MARKUP":
+            project.newMarkup('clash','active',payload.title,payload.user_name || '')
+            return { ...state }
+
         case "NEW_COMMENT":
-            const newComment = action.payload.comment
-            project.newComment(action.payload.markup,newComment.comment,newComment.author,newComment.viewpointId)
+            const newComment = payload.comment
+            project.newComment(payload.markup,newComment.comment,newComment.author,newComment.viewpointId)
             return { ...state }
 
         case "REMOVE_COMMENT":
-            project.removeComment(action.payload.comment.guid)
+            project.removeComment(payload.comment.guid)
             return { ...state }
 
         case "UNLOAD_PROJECT":
@@ -87,7 +124,7 @@ export function BcfContextProvider({ children }) {
 
     const value = {
         project: state.project,
-        dispatch
+        bcfDispatch: dispatch
     }
 
     return (

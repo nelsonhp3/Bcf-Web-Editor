@@ -25,3 +25,39 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+.labelsList {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.chipsListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.chipsListContainer>span {
+    font-size: 0.7rem;
+}
+
+.chipsListContainer>div {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chipItem {
+    border: 0.1rem solid var(--global-blue);
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    align-self: flex-start;
+    font-size: 0.6rem;
+}
+
+.topicProperties {
+    display: flex;
+    gap: 2rem;
+}

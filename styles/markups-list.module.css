@@ -38,12 +38,17 @@
     flex-direction: column;
     gap: 0.3rem;
     font-size: 0.8rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 .chipsListContainer>span {
     font-size: 0.7rem;
+}
+
+.chipsListContainer>div {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chipItem {
@@ -57,7 +62,7 @@
 .assignedToAndDueDateContainer {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 10rem auto;
     justify-content: space-between;
     gap: 2rem;
 }

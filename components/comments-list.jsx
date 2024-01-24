@@ -1,7 +1,9 @@
 import React,{ useContext, useEffect,useState } from 'react'
 import { UserContext } from '../context/user-context'
+import styles from '../styles/comments.module.css'
 
-const CommentContainer = (props) => {
+const Comment = (props) => {
+    const { bcfDispatch, bcfProject } = props
     
     const [comment,setComment] = useState(props.comment || [])
 
@@ -34,16 +36,46 @@ const CommentContainer = (props) => {
         setComment(props.comment || [])
     },[props.comment])
 
-    return <div>
-        <span>{comment.author}</span>
-        <span>{comment.comment}</span>
-        <button>Edit Comment</button>
-        <button onClick={handleRemoveComment}>Delete Comment</button>
-    </div>
+    return (
+        <li className={styles.commentMainContainer}>
+            <div className={styles.comment}>
+                <div className={styles.content}>
+                    <div className={styles.userPicture}>
+                        {comment.author.charAt(0)}
+                    </div>
+                    <h3 className={styles.header}>
+                        <span className={styles.userName}>
+                            {comment.author}
+                        </span>
+                        <span className={styles.createdDate}>
+                            {comment.date ? new Date(comment.date).toLocaleString('en-US',{ day: 'numeric',month: 'long',year: 'numeric' }) : ''}
+                        </span>
+                        <span className={styles.modifiedDate}>
+                            {comment.modified_date}
+                        </span>
+                    </h3>
+                    <div className={styles.commentText}>{comment.comment}</div>
+                    <div className={styles.modificationInfoContainer}>
+                        <span>❕</span>
+                        <span onClick={handleRemoveComment}>modified</span>
+                    </div>
+                    <div className={styles.buttonContainer}>
+                        <button>✏️</button>
+                        <button onClick={handleRemoveComment}>🗑️</button>
+                    </div>
+                </div>
+                {
+                    !comment.viewpoint ? '' : 
+                    <div className={styles.snapshot}>
+                        <img src='https://i.imgur.com/wM0AUJQ.jpeg'/>
+                    </div>
+                }
+            </div>
+        </li>)
 }
 
 const CommentsList = (props) => {
-    const { markup, bcfDispatch } = props;
+    const { markup, bcfDispatch, bcfProject } = props;
 
     const newCommentInputId = `${markup?.topic.guid}-commentInput`
 
@@ -62,6 +94,10 @@ const CommentsList = (props) => {
         newCommentTextInput.value = ''
     }
 
+    const newAttachment = () => {
+        
+    }
+
     const onEnterKeyDown = (e) => {
         if(e.key == 'Enter')
             handleNewComment()
@@ -72,26 +108,36 @@ const CommentsList = (props) => {
             setComments(markup.topic.comments || [])
         else
             setComments([])
-    }, [markup])
+    }, [markup, markup.topic.comments])
 
     if (!markup) {
         return <h1>Select a Markup</h1>
     }
 
     return (
-        <div>
-            <div>
-                {comments.length > 0 &&
-                    comments.map((comment, i) => (
-                        <CommentContainer comment={comment} key={i} bcfDispatch={bcfDispatch}/>
-                    ))}
-            </div>
-            <div>
-                <input type="text" id={newCommentInputId} onKeyDown={onEnterKeyDown}/>
-                <button onClick={handleNewComment}>Add Comment</button>
-            </div>
+        <div className={styles.commentsList}>
+            {comments.length > 0 &&
+                comments.map((comment, i) => (
+                    <Comment comment={comment} key={i} bcfDispatch={bcfDispatch} bcfProject={bcfProject}/>
+                ))}
         </div>
-    );
+    )
+
+    // return (
+    //     <div className={styles.commentsListMainContainer}>
+    //         <div className={styles.commentsList}>
+    //             {comments.length > 0 &&
+    //                 comments.map((comment, i) => (
+    //                     <Comment comment={comment} key={i} bcfDispatch={bcfDispatch} bcfProject={bcfProject}/>
+    //                 ))}
+    //         </div>
+    //         {/* <div className={styles.newCommentContainer}>
+    //             <button onClick={newAttachment}>➕</button>
+    //             <input type="text" id={newCommentInputId} onKeyDown={onEnterKeyDown}/>
+    //             <button onClick={handleNewComment}>Add Comment</button>
+    //         </div> */}
+    //     </div>
+    // )
 };
 
 export default CommentsList

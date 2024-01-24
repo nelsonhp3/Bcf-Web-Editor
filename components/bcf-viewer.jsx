@@ -11,18 +11,45 @@ import { UserContext } from '../context/user-context'
 import Topic from './topic'
 
 function BcfViewer() {
-    const { project,dispatch } = useContext(BcfContext)
+    const { project,bcfDispatch } = useContext(BcfContext)
     const {user} = useContext(UserContext)
     const [loading,setLoading] = useState(false)
     const [selectedMarkup, setSelectedMarkup] = useState(null)
 
     const handleMarkupSelect = (selectedItem) => {
         setSelectedMarkup(selectedItem)
-        console.log('SELECTED MARKUP: ',selectedMarkup)
     }
 
     const createMarkup = () => {
-        project.newMarkup('','','New Markup')
+        const test = bcfDispatch({
+            type: "NEW_MARKUP",
+            payload: { title: 'New Markup', user_name:user.name },
+        })
+
+        console.log('test :>> ', test);
+
+
+    }
+
+    const newAttachment = () => {
+        
+    }
+
+    const handleNewComment = () => {
+        const newCommentTextInput = 'new-comment-text-input'
+        if (!newCommentTextInput || !newCommentTextInput.value) return
+
+        bcfDispatch({
+            type: "NEW_COMMENT",
+            payload: { markup, comment: { comment: newCommentTextInput.value, author: user.name } },
+        })
+
+        newCommentTextInput.value = ''
+    }
+
+    const onEnterKeyDown = (e) => {
+        // if(e.key == 'Enter')
+        //     handleNewComment()
     }
 
     return (
@@ -38,7 +65,7 @@ function BcfViewer() {
                             <button className={styles.mainActionButton} onClick={createMarkup}>➕ New Markup</button>
                             <div className={styles.linearShadow}/>
                             <div className={styles.listMarkups}>
-                                {loading ? ("Loading") : <MarkupsList markups={project.markups} bcfDispatch={dispatch} onMarkupSelect={handleMarkupSelect}/>}
+                                {loading ? ("Loading") : <MarkupsList project={project} bcfDispatch={bcfDispatch} onMarkupSelect={handleMarkupSelect}/>}
                             </div>
                             <div className={styles.linearShadow}/>
                             <FooterSettings/>
@@ -49,7 +76,12 @@ function BcfViewer() {
                                     <div className={styles.withMarkup}>
                                         <Topic topic={selectedMarkup.topic}/>
                                         <div className={styles.commentsList}>
-                                            <CommentsList markup={selectedMarkup} bcfDispatch={dispatch}/>
+                                            <CommentsList markup={selectedMarkup} bcfDispatch={bcfDispatch} bcfProject={project}/>
+                                        </div>
+                                        <div className={styles.newCommentContainer}>
+                                            <button className={styles.mainActionButton} onClick={newAttachment}>➕</button>
+                                            <input type="text" id='new-comment-text-input' onKeyDown={onEnterKeyDown}/>
+                                            <button className={styles.mainActionButton} onClick={handleNewComment}>Add Comment</button>
                                         </div>
                                     </div>
                                 }

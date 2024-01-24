@@ -22,11 +22,12 @@
 
 .middleColumn {
     display: flex;
-    width: 30rem;
+    width: 750px;
     background-color: #1F1F1F;
 }
 
 .rightColumn {
+    display: flex;
     flex: 1;
     background-color: #333;
     justify-content: center;
@@ -75,6 +76,7 @@
 
 .commentsList {
     flex: 1;
+    overflow-y: auto;
 }
 
 /*TODO: Move this */
@@ -90,4 +92,15 @@
 
 .mainActionButton:hover {
     background-color: #333;
+}
+
+.newCommentContainer {
+    display: flex;
+    height: 50px;
+}
+
+.newCommentContainer>input {
+    flex: 1;
+    background-color: #555;
+    color: white;
 }
