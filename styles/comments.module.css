@@ -1,12 +1,3 @@
-.commentsListMainContainer {
-    list-style: none;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: 100%;
-
-}
-
 .commentsList {
     flex: 1;
     --placeholder-header-color-1: rgb(173, 20, 87);
@@ -18,8 +9,14 @@
     margin-top: 1rem;
     padding-left: 72px;
     padding-right: 48px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    min-height: 3rem;
+    transition: var(--global-transition-duration);
+}
+
+.commentMainContainer:hover {
+    background-color: hsl(0, 0%, 18%);
 }
 
 .comment {
@@ -61,21 +58,79 @@
 
 .modifiedDate {}
 
-.buttonContainer {
-    list-style: none;
-    position: absolute;
-    top: 0;
-    right: 1rem;
-    background-color: var(--placeholder-header-color-1);
-}
 
-.modificationInfoContainer {
-    list-style: none;
+
+.modifiedInfoContainer {
     position: absolute;
     top: 0;
     right: 6rem;
-    background-color: var(--placeholder-header-color-1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.modifiedAlert {
+    list-style: none;
+    color: #aaa;
+    font-size: 0.85rem;
+    width: 5rem;
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+.modifiedTooltip {
+    visibility: collapse;
+    position: absolute;
+    top: 25px;
+    align-self: center;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    width: max-content;
+    max-width: 12rem;
+    font-size: 0.8em;
+    color: #fff;
+    background-color: #333;
+    opacity: 0.8;
+    border: 2px solid rgba(41, 41, 41, 0.603);
+    border-radius: 4px;
+    transition: opacity 0.3s;
+}
+
+.modifiedAlert:hover~.modifiedTooltip {
+    visibility: visible;
+    opacity: 0.8;
+}
+
+/* .modifiedAlert:hover::before {
+    content: "This is a tooltip";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em;
+    border-radius: 4px;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.modifiedAlert:hover::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+    transform: translateX(-50%);
+} */
 
 .commentText {
     overflow-wrap: break-word;
@@ -88,6 +143,7 @@
     max-height: 300px;
     border-radius: 1rem;
     object-fit: cover;
+    cursor: pointer;
 }
 
 /*max-lines: 3; Adjust as needed */
@@ -103,4 +159,41 @@
 
 .newCommentContainer>input {
     flex: 1;
+}
+
+.buttonContainer {
+    list-style: none;
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    border: 0.1rem solid #ffffff;
+    border-radius: 0.4rem;
+    height: 20px;
+}
+
+.mainActionButton {
+    height: 20px;
+    flex: 1;
+    margin: 0;
+    background-color: #ffffff;
+    color: #ccc;
+    border: 0;
+    cursor: pointer;
+    transition: var(--global-transition-duration);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.mainActionButton:nth-of-type(1) {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.3rem 0 0 0.3rem;
+}
+
+.mainActionButton:nth-last-of-type(1) {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 0.3rem 0.3rem 0;
+}
+
+.mainActionButton:hover {
+    background-color: #333;
 }

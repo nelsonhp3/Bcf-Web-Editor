@@ -7,7 +7,6 @@ function labelsList(markup) {
     if(labels)
         return (
             <div className={styles.chipsListContainer}>
-                <span>Labels</span>
                 <div className={styles.labelsList}>
                     {labels.map((label,i) => (<div className={styles.chipItem} key={i}>{label}</div>))}
                 </div>
@@ -47,7 +46,10 @@ function MarkupsList({project, onMarkupSelect}) {
                             </div>  
                         }
                         </div>
-                        <h2>{markup.topic.title}</h2>
+                        <div className={styles.titleContainer}>
+                            <div className={styles.chipItem}>{markup.topic.topic_status}</div>
+                            <h1>{markup.topic.title}</h1>
+                        </div>
                         {labelsList(markup)}
                     </div>
             ))}

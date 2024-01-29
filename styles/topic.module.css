@@ -1,17 +1,44 @@
-.markupHeader {
-    display: flex;
-    flex-direction: column;
+.topicContainer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
     gap: 0.5rem;
     padding: 1rem;
     font-size: 0.75rem;
     background-color: #444;
 }
 
-.markupHeader h1 {
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 1em;
+}
+
+.titleAndDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+.otherProperties {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.topicContainer h1 {
     font-size: 1rem;
 }
 
-.markupHeader>span, .markupHeader>input {
+.topicContainer>span, .topicContainer>input {
     font-size: 0.875rem;
 }
 
@@ -19,11 +46,6 @@
     display: flex;
     gap: 1rem;
     align-items: center;
-}
-
-.datesContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .labelsList {
@@ -50,6 +72,7 @@
 }
 
 .chipItem {
+    background-color: var(--global-blue-background);
     border: 0.1rem solid var(--global-blue);
     border-radius: 0.5rem;
     padding: 0.2rem 0.4rem;
@@ -60,4 +83,11 @@
 .topicProperties {
     display: flex;
     gap: 2rem;
+}
+
+.dateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    height: 3rem;
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from '../styles/topic.module.css'
+import { convertDate } from '../helpers/helper'
 
 // interface ITopic {
 //  ✅ guid: string,
@@ -26,11 +27,18 @@ import styles from '../styles/topic.module.css'
 //     viewpoints?: IViewPoint[] | undefined ,
 // }
 
+function ChipButton({value, handleOnClick}){
+    return (<div className={styles.chipItem} onClick={handleOnClick}>{value}</div>)
+}
+
 function ChipProperty({property}) {
     let value = property.value
-    if(property.isMultiValues && !Array.isArray(value))
+    
+    if(property.isMultiValues && value && !Array.isArray(value)) //Transform to array if it's just one value
         value = [value]
 
+    //TODO: Predict if the value is array but must be single?
+        
     if(property.valueSeparator)
         value = value.split(property.valueSeparator)
 
@@ -39,12 +47,13 @@ function ChipProperty({property}) {
             <div className={styles.chipsListContainer}>
                 <span>{property.name}</span>
                 <div className={styles.labelsList}>
-                    {property.isMultiValues ? 
-                        <>
-                            {value.map((label,i) => (<div className={styles.chipItem} key={i}>{label}</div>))}
-                            <div className={styles.chipItem}>+</div>
-                        </> :
-                        <div className={styles.chipItem}>{value}</div>
+                    { !value ? <ChipButton value='+'/> : 
+                        property.isMultiValues ? 
+                            <>
+                                {value.map((label,i) => (<ChipButton key={i} value={label}/>))}
+                                <ChipButton value='+'/>
+                            </> :
+                            <ChipButton value={value}/>
                     }
                 </div>
             </div>
@@ -54,27 +63,37 @@ function ChipProperty({property}) {
 function Topic({topic}) {
 
     return (
-        <div className={styles.markupHeader}>
-            <h1>{topic.title}</h1>
-            <span>{topic.description}</span>
-            <ChipProperty property={{name:'Assigned To', value:topic.assigned_to}}/>
-            <div className={styles.topicProperties}>
-                <ChipProperty property={{name:'Topic Type', value:topic.topic_type}}/>
-                <ChipProperty property={{name:'Topic Status', value:topic.topic_status}}/>
-                <ChipProperty property={{name:'Labels', value:topic.labels, isMultiValues:true}}/>
+        <div className={styles.topicContainer}>
+            <div className={styles.leftColumn}>
+                <div className={styles.titleAndDescription}>
+                    <h1>{topic.title}</h1>
+                    <span className={styles.description}>{topic.description}</span>
+                </div>
+                <div className={styles.otherProperties}>
+                    <ChipProperty property={{name:'Assigned To', value:topic.assigned_to}}/>
+                    <div className={styles.topicProperties}>
+                        <ChipProperty property={{name:'Topic Type', value:topic.topic_type}}/>
+                        <ChipProperty property={{name:'Topic Status', value:topic.topic_status}}/>
+                        <ChipProperty property={{name:'Labels', value:topic.labels, isMultiValues:true}}/>
+                    </div>
+                </div>
             </div>
-            <div className={styles.datesContainer}>
-                <div>🕑 Creation Date</div>
-                <div>🕑 Modified Date</div>
-                <div>🕑 Due Date</div>
-                <span>{topic.creation_date ? new Date(topic.creation_date).toLocaleString() : ''}</span>
-                <span>{topic.modified_date ? new Date(topic.modified_date).toLocaleString() : ''}</span>
-                <span>{topic.due_date ? new Date(topic.due_date).toLocaleString() : ''}</span>
+            <div className={styles.rightColumn}>
+                <div className={styles.dateContainer}>
+                    <div>Created by</div>
+                    <span>{topic.creation_author}</span>
+                    <span>{topic.creation_date ? convertDate(topic.creation_date, true) : ''}</span>
+                </div>
+                <div className={styles.dateContainer}>
+                    <div>Modified by</div>
+                    <span>{topic.modified_author}</span>
+                    <span>{topic.modified_date ? convertDate(topic.modified_date, true) : ''}</span>
+                </div>
+                <div className={styles.dateContainer}>
+                    <div>Due Date</div>
+                    <span>{topic.due_date ? convertDate(topic.due_date, true) : ''}</span>
+                </div>
             </div>
-            {/* <div className={styles.labelsContainer}>
-                <div>Labels</div>
-                <input value={topic.assigned_to}/>
-            </div> */}
         </div>
     )
 }

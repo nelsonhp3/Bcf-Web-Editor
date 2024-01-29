@@ -30,6 +30,8 @@ const ImageComponent = () => {
 }
 
 function createDummyProject() {
+    const imgCoolCat = 'https://i.imgur.com/wM0AUJQ.jpeg'
+    const imgWallpaperCity = 'https://images.unsplash.com/photo-1507090960745-b32f65d3113a'
 
     const dummyProject = new BcfProject('Random Project')
     const markup1 = dummyProject.newMarkup('clash','active','Pipe clashing with another pipe','Nelson Henrique')
@@ -42,20 +44,25 @@ function createDummyProject() {
     const comment1_3 = dummyProject.newComment(markup1,'Olha esse gato!!!','Nelson Henrique',undefined) //TODO: Fix this viewpoint error in bcf-js
     // const newSnp = dummyProject.newSnapshot(markup1,'')
     // comment1_2.viewpoint = newSnp.guid || 'asdasdjsakdjaslkdj'
-    comment1_3.viewpoint = 'asdasdjsakdjaslkdj'
+    comment1_3.viewpoint = imgCoolCat
     // const { visualizationInfo } = dummyProject.editViewpointInfo(newSnp.guid)
+    comment1_2.modified_author = 'Rafael Chaves'
+    comment1_2.modified_date = new Date(Date.now()).toLocaleString('en-US',{ day: 'numeric',month: 'long',year: 'numeric' })
+    comment1_2.viewpoint = imgWallpaperCity
+    markup1.topic.modified_author = comment1_2.modified_author
+    markup1.topic.modified_date = comment1_2.modified_date
 
     const markup2 = dummyProject.newMarkup('clash','active','Column in the middle of the room','Nelson Henrique')
-    markup2.topic.labels = ["ARQ","EST","ELE","HID"]
+    markup2.topic.labels = ["ARQUITETURA","ESTRUTURAL","ELETRICO","HIDRAULICO","COMPATIBILIZAÇÃO","IMPLANTAÇÃO"]
     markup2.topic.assigned_to = "Rafael Chaves"
     const comment2 = dummyProject.newComment(markup2,'Moving it to the right.','Nelson Henrique')
 
-    const markup3 = dummyProject.newMarkup('clash','active','Beam below the ceiling','Nelson Henrique')
+    const markup3 = dummyProject.newMarkup('clash','active','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec arcu vel felis ultrices varius. Nullam scelerisque justo in nisl tristique, a aliquet nunc rhoncus. Vivamus et tortor diam. Fusce ac purus vitae tellus consectetur luctus. Morbi vel felis in ante tincidunt ultrices nec eu sem. Aenean vel ligula nec mauris viverra consequat. Nullam auctor justo non odio gravida, nec tincidunt ipsum vestibulum','Nelson Henrique')
     const comment3 = dummyProject.newComment(markup3,'Cant be fixed.','Nelson Henrique')
     markup3.topic.labels = ["ARQ","EST","ELE","HID"]
     markup3.topic.due_date = new Date(Date.now()).toLocaleString('en-US',{ day: 'numeric',month: 'long',year: 'numeric' })
 
-    const markup4 = dummyProject.newMarkup('clash','active','Beam below the ceiling','Nelson Henrique')
+    const markup4 = dummyProject.newMarkup('clash','active','One Word Title','Nelson Henrique')
     const comment4 = dummyProject.newComment(markup4,'Cant be fixed.','Nelson Henrique')
     markup4.topic.assigned_to = "Israel Augusto"
 
@@ -107,6 +114,9 @@ export const BcfReducer = (state,action) => {
 
         case "REMOVE_COMMENT":
             project.removeComment(payload.comment.guid)
+            return { ...state }
+
+        case "PROJECT_UPDATED":
             return { ...state }
 
         case "UNLOAD_PROJECT":

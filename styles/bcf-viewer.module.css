@@ -34,12 +34,41 @@
     align-content: center;
     justify-items: center;
     align-items: center;
+    cursor: grab;
+}
+
+.rightColumn:active {
+    cursor: grabbing;
+}
+
+.rightColumn>:nth-child(1) {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightColumn>:nth-child(1)>div>img {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+    cursor: crosshair;
+    border: 2px solid #444;
 }
 
 .projectHeader {
     display: flex;
+    align-items: center;
     padding: 0.5em 1.0em;
     gap: 1.0em;
+}
+
+.projectHeader>h1 {
+    height: fit-content;
 }
 
 .projectHeader>img {
@@ -63,15 +92,14 @@
     width: 100%;
 }
 
+.withoutMarkup>h1 {
+    font-size: 3em;
+}
+
 .withMarkup {
     display: flex;
     flex-direction: column;
     width: 100%;
-}
-
-.markupHeader {
-    display: flex;
-    flex-direction: column;
 }
 
 .commentsList {
@@ -87,7 +115,7 @@
     color: #ccc;
     border: 0;
     cursor: pointer;
-    transition: 0.7s;
+    transition: var(--global-transition-duration);
 }
 
 .mainActionButton:hover {

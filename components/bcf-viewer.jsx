@@ -1,5 +1,5 @@
 // bcf-viewer.js
-import { useContext,useState } from 'react'
+import { useContext,useEffect,useRef,useState } from 'react'
 import { BcfContext } from '../context/bcf-context'
 import MarkupsList from './markups-list'
 import NoSSR from 'react-no-ssr'
@@ -9,12 +9,17 @@ import FooterSettings from './footer-settings'
 import CommentsList from './comments-list'
 import { UserContext } from '../context/user-context'
 import Topic from './topic'
+import { TransformComponent, TransformWrapper, ReactZoomPanPinchRef, useTransformEffect } from 'react-zoom-pan-pinch'
+import { AppContext } from '../context/app-settings-context'
+import ViewpointViewer from './viewpoint-viewer'
 
 function BcfViewer() {
     const { project,bcfDispatch } = useContext(BcfContext)
-    const {user} = useContext(UserContext)
+    const {user, userDispatch} = useContext(UserContext)
+    const {app, appDispatch} = useContext(AppContext)
     const [loading,setLoading] = useState(false)
     const [selectedMarkup, setSelectedMarkup] = useState(null)
+    const transformComponentRef = useRef(null)
 
     const handleMarkupSelect = (selectedItem) => {
         setSelectedMarkup(selectedItem)
@@ -52,6 +57,13 @@ function BcfViewer() {
         //     handleNewComment()
     }
 
+    useEffect(()=>{
+        if (transformComponentRef.current) {
+            const { zoomToElement, resetTransform } = transformComponentRef.current
+            resetTransform(0)
+        }
+    },[app.viewpointSrc])
+
     return (
         <NoSSR>
             <div className={styles.mainContainer}>
@@ -76,7 +88,7 @@ function BcfViewer() {
                                     <div className={styles.withMarkup}>
                                         <Topic topic={selectedMarkup.topic}/>
                                         <div className={styles.commentsList}>
-                                            <CommentsList markup={selectedMarkup} bcfDispatch={bcfDispatch} bcfProject={project}/>
+                                            <CommentsList markup={selectedMarkup} bcfDispatch={bcfDispatch} bcfProject={project} contextUser={user} appDispatch={appDispatch}/>
                                         </div>
                                         <div className={styles.newCommentContainer}>
                                             <button className={styles.mainActionButton} onClick={newAttachment}>➕</button>
@@ -87,7 +99,23 @@ function BcfViewer() {
                                 }
                         </div>
                         <div className={styles.rightColumn}>
-                            <img src='./bcf-icon.svg'/>
+                            <TransformWrapper 
+                                ref={transformComponentRef}
+                                initialPositionX={0}
+                                initialPositionY={0}
+                                initialScale={1}
+                                smooth={false}
+                                minScale={0.2}
+                                maxScale={1000}
+                                zoomAnimation={{disabled:true}}
+                                alignmentAnimation={{disabled:true}}
+                                velocityAnimation={{disabled:true}}
+                                limitToBounds={false}
+                                >
+                                <TransformComponent>
+                                    <ViewpointViewer viewpointSrc={app.viewpointSrc}/>
+                                </TransformComponent>
+                            </TransformWrapper>
                         </div>
                     </div>
                 }

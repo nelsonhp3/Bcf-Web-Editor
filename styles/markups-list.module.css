@@ -13,11 +13,29 @@
     background-color: var(--markup-item);
     border: 0.1rem solid var(--markup-item-border);
     cursor: pointer;
-    transition: 0.7s;
+    transition: var(--global-transition-duration);
 }
 
-.markupItem>h2 {
+.titleContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
     margin: 0;
+    max-height: 6em;
+}
+
+.titleContainer>h1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.titleContainer>.chipItem {
+    max-width: 4em;
 }
 
 .markupItem:hover {
@@ -28,9 +46,14 @@
     background-color: var(--markup-item-selected);
 }
 
+/*TODO: add ellipsis if cant fix the flex box*/
 .labelsList {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 3rem;
     gap: 0.3rem;
+    overflow: hidden;
 }
 
 .chipsListContainer {
@@ -38,6 +61,9 @@
     flex-direction: column;
     gap: 0.3rem;
     font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chipsListContainer>span {
@@ -46,17 +72,19 @@
 
 .chipsListContainer>div {
     max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
 }
 
 .chipItem {
+    background-color: var(--global-blue-background);
     border: 0.1rem solid var(--global-blue);
     border-radius: 0.5rem;
     padding: 0.2rem 0.4rem;
     align-self: flex-start;
     font-size: 0.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .assignedToAndDueDateContainer {

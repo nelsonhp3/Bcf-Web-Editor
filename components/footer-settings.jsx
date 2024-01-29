@@ -5,7 +5,7 @@ import { BcfContext } from '../context/bcf-context'
 import { BcfParser } from '@nelsonhp3/bcf-js'
 
 function FooterSettings() {
-    const { project,dispatch } = useContext(BcfContext)
+    const { project,bcfDispatch } = useContext(BcfContext)
 
     const uploadBCF = async () => {
         const input = document.createElement('input')
@@ -21,12 +21,11 @@ function FooterSettings() {
                 var projectLoad = new BcfParser()
                 await projectLoad.read(buffer)
                 console.log('projectLoad :>> ', projectLoad);
-                dispatch({
+                bcfDispatch({
                     type: "LOAD_PROJECT_SUCCESS",
                     payload: { project: projectLoad.project },
                 })
 
-                // await loadProject(file,dispatch)
             } catch (error) {
                 console.error('Error while uploading BCF:',error)
             }
